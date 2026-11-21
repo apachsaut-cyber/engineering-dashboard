@@ -47,7 +47,7 @@ body.dark{background:#111827;color:#e7edf8}body.dark .panel{background:#1c2637;b
 <section class="panel" id="report"><h2>Сводный отчёт по проекту</h2><div class="no-print actions"><button class="primary" id="save">Сохранить расчёты</button><button id="print">Печать / PDF</button><button id="reset">Сбросить данные</button></div><table><thead><tr><th>Показатель</th><th>Результат</th><th>Ед.</th></tr></thead><tbody id="rows"></tbody></table><p class="hint">Данные сохраняются в локальном хранилище браузера на этом устройстве.</p></section>
 <footer>Учебный инженерный калькулятор · Вариант 2</footer></main>
 <script>
-const SHEETS_URL='https://script.google.com/macros/s/AKfycbysXbTrCBg5UxZF5sIfpA-USHjHM1Tu0ZnqFM5rcK0F37KsSRmVw8wTDgbn9UVt4Im7/exec';
+const SHEETS_URL='https://script.google.com/macros/s/AKfycbwLzMovqB03tj7VNVRCY3B1Rj_dM7wIAjMuHuaVqX0Pih9x-ZH9UafBLlyHZOnMXpPL/exec';
 const ids=['L','B','h','V','rho','P','T','q','price'];const el=id=>document.getElementById(id);const num=id=>Math.max(0,Number(el(id).value)||0);const fmt=n=>n.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2});
 function calc(){const v=num('L')*num('B')*num('h'),m=num('V')*num('rho'),t=num('P')>0?num('V')/num('P'):0,f=num('T')*num('q'),c=f*num('price');el('volume').textContent=fmt(v)+' м³';el('mass').textContent=fmt(m)+' т';el('hours').textContent=fmt(t)+' ч';el('fuel').textContent=fmt(f)+' л';el('cost').textContent=fmt(c)+' руб.';el('rows').innerHTML=[['Объём грунта',fmt(v),'м³'],['Масса грунта',fmt(m),'т'],['Машино-часы',fmt(t),'ч'],['Расход топлива',fmt(f),'л'],['Стоимость топлива',fmt(c),'руб.']].map(r=>'<tr>'+r.map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('');}
 function sendToSheets(moduleName, inputs, result, statusId){
