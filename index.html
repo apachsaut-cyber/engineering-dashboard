@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Инженерный дашборд для расчёта земляных работ, уплотнения грунта и расхода топлива.">
+<title>Инженерный дашборд — Вариант 2</title>
+<style>
+:root{font-family:Inter,Segoe UI,Arial,sans-serif;color:#172033;background:#f3f6fb;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;padding:28px 18px 50px;background:linear-gradient(135deg,#eef3fb,#f8fafc);min-height:100vh}
+main{max-width:1120px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}
+h1{font-size:clamp(24px,4vw,36px);margin:0}h2{font-size:21px;margin:0 0 20px}.sub{color:#65718a;margin:8px 0 0}
+button{border:0;border-radius:10px;padding:11px 16px;font-weight:650;cursor:pointer;background:#e8eef9;color:#24324b}
+button.primary{background:#245eea;color:white}button:hover{filter:brightness(.96)}
+nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}nav button.active{background:#245eea;color:white}
+.panel{display:none;background:white;border:1px solid #e5eaf2;border-radius:18px;padding:24px;box-shadow:0 12px 34px #263b5b0c}.panel.active{display:block}
+.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+label{display:block;font-size:13px;color:#596780;margin-bottom:7px}input{width:100%;padding:12px;border:1px solid #dce3ef;border-radius:10px;font:inherit;color:#172033;background:#fbfcff}
+input:focus{outline:2px solid #b9ccff;border-color:#245eea}.metric{background:#f2f6ff;border-radius:14px;padding:18px;margin-bottom:12px}.metric small{color:#5c6c89}.value{font-size:27px;font-weight:750;color:#245eea;margin-top:6px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.hint{font-size:13px;color:#68758d;line-height:1.5}
+table{width:100%;border-collapse:collapse;margin-top:12px}th,td{text-align:left;padding:13px;border-bottom:1px solid #e8edf5}th{color:#65718a;font-size:13px}
+footer{color:#77839a;font-size:12px;text-align:center;margin:24px}
+body.dark{background:#111827;color:#e7edf8}body.dark .panel{background:#1c2637;border-color:#2c3a50}body.dark input{background:#111b2b;color:#e7edf8;border-color:#3a4961}body.dark .metric{background:#253550}body.dark .sub,body.dark .hint,body.dark label{color:#aab8d0}body.dark th,body.dark td{border-color:#35435a}body.dark button{background:#34445e;color:#e7edf8}
+@media(max-width:720px){body{padding:18px 12px}.layout{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.panel{padding:18px}header{align-items:flex-start;flex-direction:column}}
+@media print{body{background:white;padding:0;color:#111}.no-print,nav{display:none!important}.panel{display:block!important;box-shadow:none;border:0;page-break-inside:avoid}.metric{border:1px solid #ddd;background:white}.value{color:#111}main{max-width:none}}
+</style>
+</head>
+<body><main>
+<header><div><h1>Инженерный дашборд</h1><p class="sub">Вариант 2 · Расчёт земляных работ и топлива</p></div><button class="no-print" id="themeBtn">☾ Тема</button></header>
+<nav class="no-print" aria-label="Разделы">
+<button class="active" data-tab="m1">1. Уплотнение грунта</button><button data-tab="m2">2. Земляные работы</button><button data-tab="m3">3. Расход топлива</button><button data-tab="report">Сводный отчёт</button>
+</nav>
+<section class="panel active" id="m1"><h2>Модуль 1 — Уплотнение грунта катками</h2><div class="layout"><div class="fields">
+<div><label for="L">Длина участка L, м</label><input id="L" type="number" min="0" step="any" value="100"></div>
+<div><label for="B">Ширина участка B, м</label><input id="B" type="number" min="0" step="any" value="10"></div>
+<div><label for="h">Толщина слоя h, м</label><input id="h" type="number" min="0" step=".01" value=".3"></div></div>
+<div><div class="metric"><small>Объём грунта V = L × B × h</small><div class="value" id="volume">300.00 м³</div></div><p class="hint">Рассчитанный объём можно передать в модуль земляных работ.</p><button class="primary" id="toM2">Передать объём в модуль 2 →</button></div></div></section>
+<section class="panel" id="m2"><h2>Модуль 2 — Объём земляных работ</h2><div class="layout"><div class="fields">
+<div><label for="V">Объём работ V, м³</label><input id="V" type="number" min="0" step="any" value="0"></div>
+<div><label for="rho">Плотность грунта ρ, т/м³</label><input id="rho" type="number" min="0" step=".01" value="1.8"></div>
+<div><label for="P">Производительность P, м³/ч</label><input id="P" type="number" min="0" step="any" value="40"></div></div>
+<div><div class="metric"><small>Масса грунта M = V × ρ</small><div class="value" id="mass">0.00 т</div></div><div class="metric"><small>Машино-часы T = V ÷ P</small><div class="value" id="hours">0.00 ч</div></div><button class="primary" id="toM3">Передать машино-часы в модуль 3 →</button></div></div></section>
+<section class="panel" id="m3"><h2>Модуль 3 — Расход топлива</h2><div class="layout"><div class="fields">
+<div><label for="T">Время работы T, маш.-ч</label><input id="T" type="number" min="0" step="any" value="0"></div>
+<div><label for="q">Норма расхода q, л/ч</label><input id="q" type="number" min="0" step="any" value="15"></div>
+<div><label for="price">Цена топлива, руб/л</label><input id="price" type="number" min="0" step="any" value="65"></div></div>
+<div><div class="metric"><small>Расход топлива Q = T × q</small><div class="value" id="fuel">0.00 л</div></div><div class="metric"><small>Стоимость C = Q × цена</small><div class="value" id="cost">0.00 руб.</div></div></div></div></section>
+<section class="panel" id="report"><h2>Сводный отчёт по проекту</h2><div class="no-print actions"><button class="primary" id="save">Сохранить расчёты</button><button id="print">Печать / PDF</button><button id="reset">Сбросить данные</button></div><table><thead><tr><th>Показатель</th><th>Результат</th><th>Ед.</th></tr></thead><tbody id="rows"></tbody></table><p class="hint">Данные сохраняются в локальном хранилище браузера на этом устройстве.</p></section>
+<footer>Учебный инженерный калькулятор · Вариант 2</footer></main>
+<script>
+const ids=['L','B','h','V','rho','P','T','q','price'];const el=id=>document.getElementById(id);const num=id=>Math.max(0,Number(el(id).value)||0);const fmt=n=>n.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2});
+function calc(){const v=num('L')*num('B')*num('h'),m=num('V')*num('rho'),t=num('P')>0?num('V')/num('P'):0,f=num('T')*num('q'),c=f*num('price');el('volume').textContent=fmt(v)+' м³';el('mass').textContent=fmt(m)+' т';el('hours').textContent=fmt(t)+' ч';el('fuel').textContent=fmt(f)+' л';el('cost').textContent=fmt(c)+' руб.';el('rows').innerHTML=[['Объём грунта',fmt(v),'м³'],['Масса грунта',fmt(m),'т'],['Машино-часы',fmt(t),'ч'],['Расход топлива',fmt(f),'л'],['Стоимость топлива',fmt(c),'руб.']].map(r=>'<tr>'+r.map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('');}
+function save(){const d={};ids.forEach(id=>d[id]=el(id).value);localStorage.setItem('engineeringDashboardV2',JSON.stringify(d));}
+function load(){try{const d=JSON.parse(localStorage.getItem('engineeringDashboardV2')||'{}');ids.forEach(id=>{if(d[id]!==undefined)el(id).value=d[id]})}catch(e){}}
+function tab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));if(id==='report')calc();}
+ids.forEach(id=>el(id).addEventListener('input',()=>{calc();save()}));
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>tab(b.dataset.tab)));
+el('toM2').onclick=()=>{el('V').value=(num('L')*num('B')*num('h')).toFixed(2);calc();save();tab('m2')};
+el('toM3').onclick=()=>{el('T').value=(num('P')>0?num('V')/num('P'):0).toFixed(2);calc();save();tab('m3')};
+el('save').onclick=()=>{save();alert('Расчёты сохранены в этом браузере.')};el('print').onclick=()=>window.print();
+el('reset').onclick=()=>{if(confirm('Сбросить все введённые значения?')){localStorage.removeItem('engineeringDashboardV2');location.reload()}};
+el('themeBtn').onclick=()=>{document.body.classList.toggle('dark');localStorage.setItem('dashboardTheme',document.body.classList.contains('dark')?'dark':'light')};
+load();if(localStorage.getItem('dashboardTheme')==='dark')document.body.classList.add('dark');calc();
+</script></body></html>
