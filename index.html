@@ -10,7 +10,7 @@
 main{max-width:1120px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:24px}
 h1{font-size:clamp(24px,4vw,36px);margin:0}h2{font-size:21px;margin:0 0 20px}.sub{color:#65718a;margin:8px 0 0}
 button{border:0;border-radius:10px;padding:11px 16px;font-weight:650;cursor:pointer;background:#e8eef9;color:#24324b}
-button.primary{background:#245eea;color:white}button:hover{filter:brightness(.96)}
+button.primary{background:#245eea;color:white}button:hover{filter:brightness(.96)}.sheet-actions{margin-top:16px}.sheet-status{font-size:13px;color:#68758d;margin:9px 0 0;min-height:18px}body.dark .sheet-status{color:#aab8d0}
 nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}nav button.active{background:#245eea;color:white}
 .panel{display:none;background:white;border:1px solid #e5eaf2;border-radius:18px;padding:24px;box-shadow:0 12px 34px #263b5b0c}.panel.active{display:block}
 .layout{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
@@ -33,22 +33,40 @@ body.dark{background:#111827;color:#e7edf8}body.dark .panel{background:#1c2637;b
 <div><label for="L">Длина участка L, м</label><input id="L" type="number" min="0" step="any" value="100"></div>
 <div><label for="B">Ширина участка B, м</label><input id="B" type="number" min="0" step="any" value="10"></div>
 <div><label for="h">Толщина слоя h, м</label><input id="h" type="number" min="0" step=".01" value=".3"></div></div>
-<div><div class="metric"><small>Объём грунта V = L × B × h</small><div class="value" id="volume">300.00 м³</div></div><p class="hint">Рассчитанный объём можно передать в модуль земляных работ.</p><button class="primary" id="toM2">Передать объём в модуль 2 →</button></div></div></section>
+<div><div class="metric"><small>Объём грунта V = L × B × h</small><div class="value" id="volume">300.00 м³</div></div><p class="hint">Рассчитанный объём можно передать в модуль земляных работ.</p><button class="primary" id="toM2">Передать объём в модуль 2 →</button></div></div><div class="sheet-actions"><button class="primary" id="logM1">Записать расчёт в Google Таблицу</button><p class="sheet-status" id="statusM1" aria-live="polite"></p></div></section>
 <section class="panel" id="m2"><h2>Модуль 2 — Объём земляных работ</h2><div class="layout"><div class="fields">
 <div><label for="V">Объём работ V, м³</label><input id="V" type="number" min="0" step="any" value="0"></div>
 <div><label for="rho">Плотность грунта ρ, т/м³</label><input id="rho" type="number" min="0" step=".01" value="1.8"></div>
 <div><label for="P">Производительность P, м³/ч</label><input id="P" type="number" min="0" step="any" value="40"></div></div>
-<div><div class="metric"><small>Масса грунта M = V × ρ</small><div class="value" id="mass">0.00 т</div></div><div class="metric"><small>Машино-часы T = V ÷ P</small><div class="value" id="hours">0.00 ч</div></div><button class="primary" id="toM3">Передать машино-часы в модуль 3 →</button></div></div></section>
+<div><div class="metric"><small>Масса грунта M = V × ρ</small><div class="value" id="mass">0.00 т</div></div><div class="metric"><small>Машино-часы T = V ÷ P</small><div class="value" id="hours">0.00 ч</div></div><button class="primary" id="toM3">Передать машино-часы в модуль 3 →</button></div></div><div class="sheet-actions"><button class="primary" id="logM2">Записать расчёт в Google Таблицу</button><p class="sheet-status" id="statusM2" aria-live="polite"></p></div></section>
 <section class="panel" id="m3"><h2>Модуль 3 — Расход топлива</h2><div class="layout"><div class="fields">
 <div><label for="T">Время работы T, маш.-ч</label><input id="T" type="number" min="0" step="any" value="0"></div>
 <div><label for="q">Норма расхода q, л/ч</label><input id="q" type="number" min="0" step="any" value="15"></div>
 <div><label for="price">Цена топлива, руб/л</label><input id="price" type="number" min="0" step="any" value="65"></div></div>
-<div><div class="metric"><small>Расход топлива Q = T × q</small><div class="value" id="fuel">0.00 л</div></div><div class="metric"><small>Стоимость C = Q × цена</small><div class="value" id="cost">0.00 руб.</div></div></div></div></section>
+<div><div class="metric"><small>Расход топлива Q = T × q</small><div class="value" id="fuel">0.00 л</div></div><div class="metric"><small>Стоимость C = Q × цена</small><div class="value" id="cost">0.00 руб.</div></div></div></div><div class="sheet-actions"><button class="primary" id="logM3">Записать расчёт в Google Таблицу</button><p class="sheet-status" id="statusM3" aria-live="polite"></p></div></section>
 <section class="panel" id="report"><h2>Сводный отчёт по проекту</h2><div class="no-print actions"><button class="primary" id="save">Сохранить расчёты</button><button id="print">Печать / PDF</button><button id="reset">Сбросить данные</button></div><table><thead><tr><th>Показатель</th><th>Результат</th><th>Ед.</th></tr></thead><tbody id="rows"></tbody></table><p class="hint">Данные сохраняются в локальном хранилище браузера на этом устройстве.</p></section>
 <footer>Учебный инженерный калькулятор · Вариант 2</footer></main>
 <script>
+const SHEETS_URL='https://script.google.com/macros/s/AKfycbysXbTrCBg5UxZF5sIfpA-USHjHM1Tu0ZnqFM5rcK0F37KsSRmVw8wTDgbn9UVt4Im7/exec';
 const ids=['L','B','h','V','rho','P','T','q','price'];const el=id=>document.getElementById(id);const num=id=>Math.max(0,Number(el(id).value)||0);const fmt=n=>n.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2});
 function calc(){const v=num('L')*num('B')*num('h'),m=num('V')*num('rho'),t=num('P')>0?num('V')/num('P'):0,f=num('T')*num('q'),c=f*num('price');el('volume').textContent=fmt(v)+' м³';el('mass').textContent=fmt(m)+' т';el('hours').textContent=fmt(t)+' ч';el('fuel').textContent=fmt(f)+' л';el('cost').textContent=fmt(c)+' руб.';el('rows').innerHTML=[['Объём грунта',fmt(v),'м³'],['Масса грунта',fmt(m),'т'],['Машино-часы',fmt(t),'ч'],['Расход топлива',fmt(f),'л'],['Стоимость топлива',fmt(c),'руб.']].map(r=>'<tr>'+r.map(x=>'<td>'+x+'</td>').join('')+'</tr>').join('');}
+function sendToSheets(moduleName, inputs, result, statusId){
+ const status=el(statusId);
+ status.textContent='Отправляем запись в Google Таблицу…';
+ const payload={module:moduleName,inputs:inputs,result:result};
+ fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+  .then(()=>{status.textContent='Запрос отправлен. Проверь новую строку в Google Таблице.';})
+  .catch(()=>{status.textContent='Не удалось отправить данные. Проверь интернет и доступ к веб-приложению.';});
+}
+el('logM1').onclick=()=>sendToSheets('Уплотнение грунта',
+ {длина_м:num('L'),ширина_м:num('B'),толщина_м:num('h')},
+ {объём_грунта_м3:num('L')*num('B')*num('h')},'statusM1');
+el('logM2').onclick=()=>sendToSheets('Земляные работы',
+ {объём_м3:num('V'),плотность_т_м3:num('rho'),производительность_м3_ч:num('P')},
+ {масса_т:num('V')*num('rho'),машино_часы:num('P')>0?num('V')/num('P'):0},'statusM2');
+el('logM3').onclick=()=>sendToSheets('Расход топлива',
+ {время_работы_маш_ч:num('T'),норма_л_ч:num('q'),цена_руб_л:num('price')},
+ {расход_топлива_л:num('T')*num('q'),стоимость_руб:num('T')*num('q')*num('price')},'statusM3');
 function save(){const d={};ids.forEach(id=>d[id]=el(id).value);localStorage.setItem('engineeringDashboardV2',JSON.stringify(d));}
 function load(){try{const d=JSON.parse(localStorage.getItem('engineeringDashboardV2')||'{}');ids.forEach(id=>{if(d[id]!==undefined)el(id).value=d[id]})}catch(e){}}
 function tab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));if(id==='report')calc();}
