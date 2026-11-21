@@ -55,10 +55,9 @@ function sendToSheets(moduleName, inputs, result, statusId){
  status.textContent='Отправляем запись в Google Таблицу…';
  const payload=JSON.stringify({module:moduleName,inputs:inputs,result:result});
  const url=SHEETS_URL+'?payload='+encodeURIComponent(payload)+'&t='+Date.now();
- const beacon=new Image();
- beacon.onload=()=>{status.textContent='Запрос доставлен. Проверь новую строку в Google Таблице.';};
- beacon.onerror=()=>{status.textContent='Запрос отправлен, но ответ не подтверждён. Проверь доступ к Apps Script и таблицу.';};
- beacon.src=url;
+ fetch(url,{method:'GET',mode:'no-cors',cache:'no-store'})
+  .then(()=>{status.textContent='Запрос отправлен. Проверь новую строку в Google Таблице.';})
+  .catch(()=>{status.textContent='Не удалось отправить запрос. Проверь интернет-соединение.';});
 }
 el('logM1').onclick=()=>sendToSheets('Уплотнение грунта',
  {длина_м:num('L'),ширина_м:num('B'),толщина_м:num('h')},
