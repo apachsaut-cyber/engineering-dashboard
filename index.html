@@ -53,10 +53,12 @@ function calc(){const v=num('L')*num('B')*num('h'),m=num('V')*num('rho'),t=num('
 function sendToSheets(moduleName, inputs, result, statusId){
  const status=el(statusId);
  status.textContent='Отправляем запись в Google Таблицу…';
- const payload={module:moduleName,inputs:inputs,result:result};
- fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
-  .then(()=>{status.textContent='Запрос отправлен. Проверь новую строку в Google Таблице.';})
-  .catch(()=>{status.textContent='Не удалось отправить данные. Проверь интернет и доступ к веб-приложению.';});
+ const payload=JSON.stringify({module:moduleName,inputs:inputs,result:result});
+ const url=SHEETS_URL+'?payload='+encodeURIComponent(payload)+'&t='+Date.now();
+ const beacon=new Image();
+ beacon.onload=()=>{status.textContent='Запрос доставлен. Проверь новую строку в Google Таблице.';};
+ beacon.onerror=()=>{status.textContent='Запрос отправлен, но ответ не подтверждён. Проверь доступ к Apps Script и таблицу.';};
+ beacon.src=url;
 }
 el('logM1').onclick=()=>sendToSheets('Уплотнение грунта',
  {длина_м:num('L'),ширина_м:num('B'),толщина_м:num('h')},
